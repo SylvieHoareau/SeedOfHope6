@@ -5,9 +5,30 @@ public class PlayerMovementIsometric : MonoBehaviour
 {
     public float moveSpeed = 5f;
 
+    // Début de modifications
+    private PlayerControls controls;
+    // Fin de modifications
     private Rigidbody2D rb;
     private Animator animator;
     private Vector2 movement;
+
+    // Début des modifications 
+    void Awake()
+    {
+        controls = new PlayerControls();
+    }
+
+    void OnEnable()
+    {
+        controls.Player.Enable();
+        controls.Player.Move.performed += ctx => movement = ctx.ReadValue<Vector2>();
+        controls.Player.Move.canceled += ctx => movement = Vector2.zero;
+    }
+
+    void OnDisable()
+    {
+        controls.Player.Disable();
+    }
 
     void Start()
     {
@@ -37,8 +58,8 @@ public class PlayerMovementIsometric : MonoBehaviour
 
     }
 
-    public void OnMovement(InputValue value)
-    {
-        movement = value.Get<Vector2>();
-    }
+    // public void OnMovement(InputValue value)
+    // {
+    //     movement = value.Get<Vector2>();
+    // }
 }
